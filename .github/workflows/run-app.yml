@@ -30,7 +30,7 @@ jobs:
           libgstreamer-plugins-base1.0-0 \
           libgstreamer-gl1.0-0 \
           libgstreamer-plugins-bad1.0-0 \
-          libavif12 \
+          libavif16 \  # Updated version of libavif
           libharfbuzz-icu0 \
           libsecret-1-0 \
           libhyphen0 \
