@@ -1,0 +1,55 @@
+name: youtube video download
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python 3.9
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    # Step 3: Install Playwright and Browsers
+    - name: Install Playwright
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install playwright
+        playwright install  # Install required browsers
+
+    # Step 4: Install FFmpeg and FFprobe
+    - name: Install FFmpeg and FFprobe
+      run: |
+        sudo apt update
+        sudo apt install -y ffmpeg
+        ffmpeg -version
+        ffprobe -version
+
+    # Step 5: Create Artifacts Directory
+    - name: Create Artifacts Directory
+      run: mkdir -p artifacts/videos
+
+    # Step 6: Run the Python script
+    - name: Run Python Script
+      run: |
+        source .venv/bin/activate
+        python main.py
+
+    # Step 7: Save artifacts from the `artifacts` folder
+    - name: Upload Result Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: artifacts/
